@@ -53,3 +53,9 @@ export type Char = {
   char: string | undefined;
   position: Position | undefined;
 };
+
+export type GameState = {
+  activeWord: number;
+  wordString: string;
+  words: string[];
+};
