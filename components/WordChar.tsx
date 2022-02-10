@@ -15,6 +15,34 @@ const WordChar = ({ char, last, position }: Char) => {
 
   let color = PositionColor.NotChecked;
 
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    switch (e.key) {
+      case KeyCode.ERASE:
+        currentKey = KeyCode.ERASE;
+        break;
+
+      case KeyCode.SUBMIT:
+        if (last) sendGuess(currentWord);
+        break;
+
+      default:
+        currentKey = e.key;
+    }
+  };
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    let newWord = '';
+
+    if (currentKey == KeyCode.ERASE) {
+      newWord = currentWord.length > 0 ? currentWord.slice(0, -1) : '';
+    } else {
+      e.target.value = e.target.value.toUpperCase();
+      newWord = currentWord + e.target.value;
+    }
+
+    setCurrentWord(newWord);
+  };
+
   if (position) {
     switch (position.status) {
       case PositionStatus.Correct:
@@ -38,36 +66,12 @@ const WordChar = ({ char, last, position }: Char) => {
     <div className='text-orange-600 bg-gray text- p-2'>
       <input
         className='w-24 h-24 rounded-2xl text-center font-bold text-7xl outline outline-4
-        outline-orange-600 hover:outline-8'
+        outline-orange-600 hover:outline-8 caret-transparent'
         style={{ backgroundColor: color }}
         maxLength={1}
         defaultValue={char}
-        onKeyDown={(e) => {
-          switch (e.key) {
-            case KeyCode.ERASE:
-              currentKey = KeyCode.ERASE;
-              break;
-
-            case KeyCode.SUBMIT:
-              if (last) sendGuess(currentWord);
-              break;
-
-            default:
-              currentKey = e.key;
-          }
-        }}
-        onChange={(e) => {
-          let newWord = '';
-
-          if (currentKey == KeyCode.ERASE) {
-            newWord = currentWord.length > 0 ? currentWord.slice(0, -1) : '';
-          } else {
-            e.target.value = e.target.value.toUpperCase();
-            newWord = currentWord + e.target.value;
-          }
-
-          setCurrentWord(newWord);
-        }}
+        onKeyDown={(e) => handleKeyDown(e)}
+        onChange={(e) => handleChange(e)}
       />
     </div>
   );
