@@ -7,14 +7,13 @@ type Word = {
 
 const Word = ({ word }: Word) => {
   return (
-    <div className='flex rounded-lg m-2 p-2'>
+    <div className='flex rounded-lg m-2 p-2 hover:cursor-default select-none'>
       {word.split('').map((c, i) => {
         return (
           <WordChar
             key={i}
-            char={undefined}
-            last={i == 4 ? true : false}
-            position={{ char: 'a', status: PositionStatus.NotChecked }}
+            char={c}
+            position={{ char: c, status: PositionStatus.NotChecked }}
           />
         );
       })}

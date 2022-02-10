@@ -9,7 +9,7 @@ const Game = () => {
     <div>
       <Word word='Teste' />
       <Word word='Navio' />
-      <Word word='Burro' />
+      <Word word='Carro' />
       <Word word='Oloco' />
       <Word word='Salve' />
     </div>

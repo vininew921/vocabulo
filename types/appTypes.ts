@@ -51,6 +51,5 @@ export type WordResponse = {
 
 export type Char = {
   char: string | undefined;
-  last: boolean;
   position: Position | undefined;
 };

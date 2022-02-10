@@ -1,47 +1,8 @@
 import React from 'react';
-import { useRecoilState } from 'recoil';
-import { currentWordState } from '../atoms/wordAtom';
-import {
-  Char,
-  KeyCode,
-  PositionColor,
-  PositionStatus,
-} from '../types/appTypes';
-import { sendGuess } from '../utils/requests';
+import { Char, PositionColor, PositionStatus } from '../types/appTypes';
 
-const WordChar = ({ char, last, position }: Char) => {
-  const [currentWord, setCurrentWord] = useRecoilState(currentWordState);
-  let currentKey = '';
-
+const WordChar = ({ char, position }: Char) => {
   let color = PositionColor.NotChecked;
-
-  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    switch (e.key) {
-      case KeyCode.ERASE:
-        currentKey = KeyCode.ERASE;
-        break;
-
-      case KeyCode.SUBMIT:
-        if (last) sendGuess(currentWord);
-        break;
-
-      default:
-        currentKey = e.key;
-    }
-  };
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    let newWord = '';
-
-    if (currentKey == KeyCode.ERASE) {
-      newWord = currentWord.length > 0 ? currentWord.slice(0, -1) : '';
-    } else {
-      e.target.value = e.target.value.toUpperCase();
-      newWord = currentWord + e.target.value;
-    }
-
-    setCurrentWord(newWord);
-  };
 
   if (position) {
     switch (position.status) {
@@ -64,15 +25,12 @@ const WordChar = ({ char, last, position }: Char) => {
 
   return (
     <div className='text-orange-600 bg-gray text- p-2'>
-      <input
-        className='w-24 h-24 rounded-2xl text-center font-bold text-7xl outline outline-4
-        outline-orange-600 hover:outline-8 caret-transparent'
+      <p
+        className='char md:mdChar lg:lgChar'
         style={{ backgroundColor: color }}
-        maxLength={1}
-        defaultValue={char}
-        onKeyDown={(e) => handleKeyDown(e)}
-        onChange={(e) => handleChange(e)}
-      />
+      >
+        {char?.toUpperCase()}
+      </p>
     </div>
   );
 };
