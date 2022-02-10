@@ -31,6 +31,8 @@ const getTodaysWord = (): TodaysWord => {
       }
     });
 
+    console.log(word.join(''));
+
     if (!found) {
       chars.push({ char: w, count: 1 });
     }
@@ -64,6 +66,7 @@ const getWordResponse = (req: WordRequest): WordResponse => {
   let currentStatus = WordStatus.CORRECT;
   const positionsResponse: Position[] = [];
   const todaysWord = getTodaysWord();
+  let foundSomething = false;
 
   for (let i = 0; i < todaysWord.word.length; i++) {
     let currentPosition = PositionStatus.Wrong;
@@ -84,12 +87,14 @@ const getWordResponse = (req: WordRequest): WordResponse => {
           currentChar = todaysWord.chars[charIndex].char;
           todaysWord.chars[charIndex].count--;
           currentPosition = PositionStatus.Misplaced;
+          foundSomething = true;
         }
       }
     }
 
     if (utf8ToASCII(todaysWord.word[i]) == utf8ToASCII(currentChar)) {
       currentChar = todaysWord.word[i];
+      foundSomething = true;
       if (currentPosition != PositionStatus.Misplaced) {
         for (let pr = 0; pr < positionsResponse.length; pr++) {
           if (
@@ -106,7 +111,9 @@ const getWordResponse = (req: WordRequest): WordResponse => {
 
     positionsResponse.push({ char: currentChar, status: currentPosition });
     if (currentPosition != PositionStatus.Correct) {
-      currentStatus = WordStatus.PARTIALLY_CORRECT;
+      currentStatus = foundSomething
+        ? WordStatus.PARTIALLY_CORRECT
+        : WordStatus.MISSED_EVERYTHING;
     }
   }
 
