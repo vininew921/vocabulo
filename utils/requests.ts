@@ -1,4 +1,4 @@
-import { WordRequest } from '../types/wordleTypes';
+import { WordRequest } from '../types/appTypes';
 
 export const sendGuess = async (word: string) => {
   const reqBody: WordRequest = {

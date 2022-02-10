@@ -8,11 +8,11 @@ import {
   WordRequest,
   WordResponse,
   WordStatus,
-} from '../../types/wordleTypes';
+} from '../../types/appTypes';
 import { words } from '../../utils/words';
 import { utf8ToASCII, validWord } from '../../utils/wordsUtil';
 
-interface WordleApiRequest extends NextApiRequest {
+interface ApiRequest extends NextApiRequest {
   body: WordRequest;
 }
 
@@ -121,7 +121,7 @@ const getWordResponse = (req: WordRequest): WordResponse => {
 };
 
 const WordResult = (
-  req: WordleApiRequest,
+  req: ApiRequest,
   res: NextApiResponse<WordResponse | string>
 ) => {
   if (req.method == 'POST') {

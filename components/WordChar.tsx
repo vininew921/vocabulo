@@ -6,7 +6,7 @@ import {
   KeyCode,
   PositionColor,
   PositionStatus,
-} from '../types/wordleTypes';
+} from '../types/appTypes';
 import { sendGuess } from '../utils/requests';
 
 const WordChar = ({ char, last, position }: Char) => {

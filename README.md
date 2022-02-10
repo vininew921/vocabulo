@@ -1,1 +1,1 @@
-# Wordle Clone
+# Vocabulo

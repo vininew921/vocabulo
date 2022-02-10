@@ -1,4 +1,4 @@
-import { PositionStatus } from '../types/wordleTypes';
+import { PositionStatus } from '../types/appTypes';
 import WordChar from './WordChar';
 
 type Word = {

@@ -1,4 +1,4 @@
-import { WordRequest } from '../types/wordleTypes';
+import { WordRequest } from '../types/appTypes';
 import { words, wordsAscii } from './words';
 
 const asciiTable = [

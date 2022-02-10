@@ -5,7 +5,7 @@ const Home = () => {
   return (
     <>
       <Head>
-        <title>Wordle</title>
+        <title>Vocábulo</title>
       </Head>
       <div className='bg-gray-900 grid h-screen place-items-center'>
         <main>
