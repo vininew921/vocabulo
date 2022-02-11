@@ -63,9 +63,6 @@ const getWordResponse = async (req: WordRequest): Promise<WordResponse> => {
   const todaysWord = await getTodaysWord(currentWord.word.join(''));
   let foundSomething = false;
 
-  console.log('currentWord', currentWord.word);
-  console.log('todaysword', todaysWord);
-
   for (let i = 0; i < todaysWord.word.length; i++) {
     let currentPosition = PositionStatus.Wrong;
     let currentChar = currentWord.word[i];

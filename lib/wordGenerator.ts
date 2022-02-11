@@ -9,11 +9,7 @@ import {
   updateDoc,
 } from 'firebase/firestore';
 import firebase from '../firebase/firebaseClient';
-
-type FirebaseWord = {
-  word: string;
-  expires: Timestamp;
-};
+import { FirebaseWord } from '../types/appTypes';
 
 export class WordGenerator {
   static wordOfTheDay = async (guess: string) => {

@@ -23,3 +23,20 @@ export const sendGuess = async (
 
   return response;
 };
+
+export const todaysWordResult = async () => {
+  let response = '';
+  await fetch('/api/gettodaysword', {
+    method: 'GET',
+    headers: {
+      'content-type': 'application/json',
+      Accept: 'application/json',
+    },
+  }).then(async (res) => {
+    if (res.ok) {
+      await res.json().then((w) => (response = w.word));
+    }
+  });
+
+  return response;
+};

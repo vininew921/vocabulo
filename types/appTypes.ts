@@ -1,3 +1,5 @@
+import { Timestamp } from 'firebase/firestore';
+
 export class WordStatus {
   static INVALID_WORD = 'Invalid Word';
   static MISSED_EVERYTHING = 'Missed everything';
@@ -61,4 +63,9 @@ export type GameState = {
   activeWord: number;
   wordString: string;
   words: string[];
+};
+
+export type FirebaseWord = {
+  word: string;
+  expires: Timestamp;
 };

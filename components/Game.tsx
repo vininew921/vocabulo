@@ -9,8 +9,13 @@ import {
 } from 'react';
 import Word from './Word';
 import { gameStateContext } from '../atoms/gameStateAtom';
-import { Position, WordResponse, WordStatus } from '../types/appTypes';
-import { sendGuess } from '../utils/requests';
+import {
+  Position,
+  PositionStatus,
+  WordResponse,
+  WordStatus,
+} from '../types/appTypes';
+import { sendGuess, todaysWordResult } from '../utils/requests';
 import { setTimeout } from 'timers';
 
 const Game = () => {
@@ -20,6 +25,7 @@ const Game = () => {
   const [wordResponse, setWordResponse] = useState<WordResponse | null>(null);
   const [canSendRequest, setCanSendRequest] = useState(true);
   const [positions, setPositions] = useState<Position[][]>([]);
+  const [finalWord, setFinalWord] = useState<string>('');
 
   useEffect(() => {
     if (inputRef.current) {
@@ -30,6 +36,21 @@ const Game = () => {
   useEffect(() => {
     setWords(gameState.words);
   }, [gameState.words]);
+
+  useEffect(() => {
+    const getFinalWord = async () => {
+      let fw = await todaysWordResult();
+      console.log(fw);
+      setFinalWord(fw);
+    };
+
+    if (
+      positions[4]?.length == 5 &&
+      positions?.[4]?.[5]?.status != PositionStatus.NotChecked
+    ) {
+      getFinalWord();
+    }
+  }, [positions]);
 
   useEffect(() => {
     if (
@@ -132,16 +153,25 @@ const Game = () => {
         onKeyDown={handleKeyDown}
       />
       <div className='flex w-full justify-center'>
-        <button
-          className={`text-center text-2xl lg:text-2xl md:text-2xl text-white outline-orange-600  hover:outline-8
+        {finalWord != '' ? (
+          <button
+            className={`text-center text-2xl lg:text-2xl md:text-2xl text-white outline-orange-600  hover:outline-8
+        font-bold h-12 w-64 rounded-2xl outline outline-4`}
+          >
+            Palavra: {finalWord.toUpperCase()}
+          </button>
+        ) : (
+          <button
+            className={`text-center text-2xl lg:text-2xl md:text-2xl text-white outline-orange-600  hover:outline-8
         font-bold h-12 w-40 rounded-2xl outline outline-4 ${
           gameState.wordString.length != 5 ? 'opacity-40' : ''
         }`}
-          type='submit'
-          onClick={() => submit('Enter')}
-        >
-          Enviar
-        </button>
+            type='submit'
+            onClick={() => submit('Enter')}
+          >
+            Enviar
+          </button>
+        )}
       </div>
     </div>
   );
