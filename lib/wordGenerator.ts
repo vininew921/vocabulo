@@ -1,5 +1,5 @@
 import { randomInt } from 'crypto';
-import { words } from './words';
+import { words } from '../utils/words';
 import schedule from 'node-schedule';
 
 export class WordGenerator {

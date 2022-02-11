@@ -1,4 +1,3 @@
-import { randomInt } from 'crypto';
 import type { NextApiRequest, NextApiResponse } from 'next';
 import {
   CharCount,
@@ -11,8 +10,7 @@ import {
 } from '../../types/appTypes';
 import { words } from '../../utils/words';
 import { utf8ToASCII, validWord } from '../../utils/wordsUtil';
-import schedule from 'node-schedule';
-import { WordGenerator } from '../../utils/wordGenerator';
+import { WordGenerator } from '../../lib/wordGenerator';
 
 interface ApiRequest extends NextApiRequest {
   body: WordRequest;

@@ -87,12 +87,15 @@ const Game = () => {
   };
 
   const handleKeyDown = async (e: KeyboardEvent<HTMLInputElement>) => {
-    await submit(e.code);
+    await submit(e.code, e.keyCode);
   };
 
-  const submit = async (code: string) => {
+  const submit = async (code: string, keyCode: number = 0) => {
     if (canSendRequest) {
-      if (gameState.wordString.length == 5 && code == 'Enter') {
+      if (
+        gameState.wordString.length == 5 &&
+        (code == 'Enter' || keyCode == 13)
+      ) {
         setCanSendRequest(false);
         setTimeout(() => {
           setCanSendRequest(true);
@@ -108,7 +111,15 @@ const Game = () => {
   return (
     <div>
       {words.map((w, i) => {
-        return <Word key={i} word={w} positions={positions?.[i]} />;
+        return (
+          <Word
+            key={i}
+            word={w}
+            positions={positions?.[i]}
+            relativePosition={i}
+            invalidWord={wordResponse?.status == WordStatus.INVALID_WORD}
+          />
+        );
       })}
       <input
         ref={inputRef}
@@ -120,8 +131,10 @@ const Game = () => {
       />
       <div className='flex w-full justify-center'>
         <button
-          className='text-center text-2xl lg:text-2xl md:text-2xl text-white outline-orange-600  hover:outline-8
-        font-bold h-12 w-40 rounded-2xl outline outline-4'
+          className={`text-center text-2xl lg:text-2xl md:text-2xl text-white outline-orange-600  hover:outline-8
+        font-bold h-12 w-40 rounded-2xl outline outline-4 ${
+          gameState.wordString.length != 5 ? 'opacity-40' : ''
+        }`}
           type='submit'
           onClick={() => submit('Enter')}
         >

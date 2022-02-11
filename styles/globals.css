@@ -4,15 +4,13 @@
 
 @layer components {
   .char {
-    @apply w-8 h-8 rounded-xl text-center font-bold text-2xl outline outline-4
-    outline-orange-600 hover:outline-8 hover:cursor-default;
+    @apply w-8 h-8 rounded-xl text-center font-bold text-2xl outline outline-4 leading-tight
+    hover:cursor-default;
   }
   .mdChar {
-    @apply w-16 h-16 rounded-2xl text-center font-bold text-6xl outline outline-4
-    outline-orange-600 hover:outline-8 hover:cursor-default;
+    @apply char w-16 h-16 rounded-2xl text-5xl leading-tight;
   }
   .lgChar {
-    @apply w-20 h-20 rounded-2xl text-center font-bold text-7xl outline outline-4
-    outline-orange-600 hover:outline-8 hover:cursor-default;
+    @apply char w-20 h-20 rounded-2xl text-6xl leading-tight;
   }
 }
