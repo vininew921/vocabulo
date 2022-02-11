@@ -87,8 +87,12 @@ const Game = () => {
   };
 
   const handleKeyDown = async (e: KeyboardEvent<HTMLInputElement>) => {
+    await submit(e.code);
+  };
+
+  const submit = async (code: string) => {
     if (canSendRequest) {
-      if (gameState.wordString.length == 5 && e.code == 'Enter') {
+      if (gameState.wordString.length == 5 && code == 'Enter') {
         setCanSendRequest(false);
         setTimeout(() => {
           setCanSendRequest(true);
@@ -113,6 +117,7 @@ const Game = () => {
         onBlur={handleInputFocus}
         onChange={handleInputChange}
         onKeyDown={handleKeyDown}
+        type='submit'
       />
     </div>
   );
