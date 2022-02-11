@@ -75,15 +75,17 @@ const Game = () => {
   };
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const wordsCopy: string[] = [];
-    gameState.words.forEach((v) => wordsCopy.push(v));
+    if (e.currentTarget.value.length <= 5) {
+      const wordsCopy: string[] = [];
+      gameState.words.forEach((v) => wordsCopy.push(v));
 
-    wordsCopy[gameState.activeWord] = e.currentTarget.value;
-    setGameState({
-      ...gameState,
-      words: wordsCopy,
-      wordString: e.currentTarget.value,
-    });
+      wordsCopy[gameState.activeWord] = e.currentTarget.value;
+      setGameState({
+        ...gameState,
+        words: wordsCopy,
+        wordString: e.currentTarget.value,
+      });
+    }
   };
 
   const handleKeyDown = async (e: KeyboardEvent<HTMLInputElement>) => {
