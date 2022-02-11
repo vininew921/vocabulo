@@ -112,12 +112,22 @@ const Game = () => {
       })}
       <input
         ref={inputRef}
-        className='absolute opacity-0 hover:cursor-default'
+        className='absolute h-1 w-1 opacity-0 hover:cursor-default'
         maxLength={5}
         onBlur={handleInputFocus}
         onChange={handleInputChange}
         onKeyDown={handleKeyDown}
       />
+      <div className='flex w-full justify-center'>
+        <button
+          className='text-center text-2xl lg:text-2xl md:text-2xl text-white outline-orange-600  hover:outline-8
+        font-bold h-12 w-40 rounded-2xl outline outline-4'
+          type='submit'
+          onClick={() => submit('Enter')}
+        >
+          Enviar
+        </button>
+      </div>
     </div>
   );
 };
