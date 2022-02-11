@@ -1,32 +1,46 @@
 import { randomInt } from 'crypto';
 import { words } from '../utils/words';
-import schedule from 'node-schedule';
+import {
+  addDoc,
+  collection,
+  doc,
+  getDocs,
+  Timestamp,
+  updateDoc,
+} from 'firebase/firestore';
+import firebase from '../firebase/firebaseClient';
+
+type FirebaseWord = {
+  word: string;
+  expires: Timestamp;
+};
 
 export class WordGenerator {
-  private static currentRandom: number;
-  private static job: schedule.Job | undefined = undefined;
+  static wordOfTheDay = async (guess: string) => {
+    let wordDoc: FirebaseWord;
+    const docs = await getDocs(collection(firebase, 'words'));
+    docs.docs.map((d) => (wordDoc = d.data() as FirebaseWord));
 
-  static getRandomValue = () => {
-    if (!WordGenerator.job) {
-      WordGenerator.currentRandom = randomInt(words.length);
-      console.log('A palavra inicial é', words[WordGenerator.currentRandom]);
-      let scheduleRule = new schedule.RecurrenceRule();
+    if (new Date().getTime() > wordDoc!.expires.toDate().getTime()) {
+      wordDoc!.word = words[randomInt(words.length)];
+      let currentDoc = doc(collection(firebase, 'words'), 'wordOfTheDay');
 
-      //Roda toda meia noite no horario de brasilia
-      scheduleRule.tz = 'America/Sao_Paulo';
-      scheduleRule.second = 0;
-      scheduleRule.minute = 0;
-      scheduleRule.hour = 0;
+      let tomorrow = new Date();
+      tomorrow.setDate(tomorrow.getDate() + 1);
+      tomorrow.setHours(0, 0, 0);
 
-      WordGenerator.job = schedule.scheduleJob(scheduleRule, () => {
-        WordGenerator.currentRandom = randomInt(words.length);
-        console.log(
-          'Bom dia! A palavra do dia é',
-          words[WordGenerator.currentRandom]
-        );
+      updateDoc(currentDoc, {
+        word: wordDoc!.word,
+        expires: Timestamp.fromDate(tomorrow),
       });
     }
 
-    return WordGenerator.currentRandom;
+    await addDoc(collection(firebase, 'guesses'), {
+      guess: guess,
+      wordOfTheDay: wordDoc!.word,
+      timestamp: Timestamp.now(),
+    });
+
+    return wordDoc!.word;
   };
 }

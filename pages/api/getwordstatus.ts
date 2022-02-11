@@ -16,8 +16,9 @@ interface ApiRequest extends NextApiRequest {
   body: WordRequest;
 }
 
-const getTodaysWord = (): TodaysWord => {
-  const word = words[WordGenerator.getRandomValue()].split('');
+const getTodaysWord = async (guess: string): Promise<TodaysWord> => {
+  const word = (await WordGenerator.wordOfTheDay(guess)).split('');
+
   const chars: CharCount[] = [];
   word.forEach((w) => {
     let found = false;
@@ -47,7 +48,7 @@ const getTodaysWord = (): TodaysWord => {
   return todaysWord;
 };
 
-const getWordResponse = (req: WordRequest): WordResponse => {
+const getWordResponse = async (req: WordRequest): Promise<WordResponse> => {
   const currentWord = req;
   currentWord.word = validWord(currentWord);
 
@@ -60,7 +61,7 @@ const getWordResponse = (req: WordRequest): WordResponse => {
 
   let currentStatus = WordStatus.CORRECT;
   const positionsResponse: Position[] = [];
-  const todaysWord = getTodaysWord();
+  const todaysWord = await getTodaysWord(currentWord.word.join(''));
   let foundSomething = false;
 
   for (let i = 0; i < todaysWord.word.length; i++) {
@@ -115,12 +116,12 @@ const getWordResponse = (req: WordRequest): WordResponse => {
   return { status: currentStatus, positions: positionsResponse };
 };
 
-const WordResult = (
+const WordResult = async (
   req: ApiRequest,
   res: NextApiResponse<WordResponse | string>
 ) => {
   if (req.method == 'POST') {
-    res.status(200).json(getWordResponse(req.body));
+    res.status(200).json(await getWordResponse(req.body));
   } else {
     res.status(405).json('Invalid method');
   }
