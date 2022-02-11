@@ -117,7 +117,6 @@ const Game = () => {
         onBlur={handleInputFocus}
         onChange={handleInputChange}
         onKeyDown={handleKeyDown}
-        type='submit'
       />
     </div>
   );
