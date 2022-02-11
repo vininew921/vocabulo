@@ -12,28 +12,14 @@ import {
 import { words } from '../../utils/words';
 import { utf8ToASCII, validWord } from '../../utils/wordsUtil';
 import schedule from 'node-schedule';
+import { WordGenerator } from '../../utils/wordGenerator';
 
 interface ApiRequest extends NextApiRequest {
   body: WordRequest;
 }
 
-let currentRandom = randomInt(words.length);
-console.log('A palavra inicial é', words[currentRandom]);
-let scheduleRule = new schedule.RecurrenceRule();
-
-//Roda toda meia noite no horario de brasilia
-scheduleRule.tz = 'America/Sao_Paulo';
-scheduleRule.second = 0;
-scheduleRule.minute = 0;
-scheduleRule.hour = 0;
-
-schedule.scheduleJob(scheduleRule, () => {
-  currentRandom = randomInt(words.length);
-  console.log('Bom dia! A palavra do dia é', words[currentRandom]);
-});
-
 const getTodaysWord = (): TodaysWord => {
-  const word = words[currentRandom].split('');
+  const word = words[WordGenerator.getRandomValue()].split('');
   const chars: CharCount[] = [];
   word.forEach((w) => {
     let found = false;
