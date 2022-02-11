@@ -154,6 +154,7 @@ const Game = () => {
   const copyToClipboard = () => {
     if (gameEndedState) {
       copy(shareText, { message: 'Copiado para a área de transferência' });
+      alert('Resultado copiado para àrea de transferência (ctrl + v)');
     }
   };
 
