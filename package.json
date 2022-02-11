@@ -8,7 +8,9 @@
     "type-check": "tsc"
   },
   "dependencies": {
+    "@types/node-schedule": "^1.3.2",
     "next": "latest",
+    "node-schedule": "^2.1.0",
     "prettier": "^2.5.1",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",

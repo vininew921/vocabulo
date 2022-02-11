@@ -1,13 +1,15 @@
 import { useEffect, useState } from 'react';
-import { PositionStatus } from '../types/appTypes';
+import { Position, PositionStatus } from '../types/appTypes';
 import WordChar from './WordChar';
 
 type Word = {
   word: string;
+  positions: Position[] | undefined;
 };
 
-const Word = ({ word }: Word) => {
+const Word = ({ word, positions }: Word) => {
   const [currentWord, setCurrentWord] = useState(word);
+  const [currentPositions, setCurrentPositions] = useState(positions);
 
   useEffect(() => {
     let tempWord = word;
@@ -16,7 +18,11 @@ const Word = ({ word }: Word) => {
     }
 
     setCurrentWord(tempWord);
-  }, [word]);
+  }, [word, positions]);
+
+  useEffect(() => {
+    setCurrentPositions(positions);
+  }, [positions]);
 
   return (
     <div>
@@ -26,7 +32,11 @@ const Word = ({ word }: Word) => {
             <WordChar
               key={i}
               char={c}
-              position={{ char: c, status: PositionStatus.NotChecked }}
+              position={{
+                char: c,
+                status:
+                  currentPositions?.[i]?.status ?? PositionStatus.NotChecked,
+              }}
             />
           );
         })}

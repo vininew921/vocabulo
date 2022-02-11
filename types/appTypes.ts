@@ -20,8 +20,8 @@ export class KeyCode {
 export class PositionColor {
   static NotChecked = '#111827';
   static Wrong = '#374151';
-  static Misplaced = '#efedc7';
-  static Correct = '#76dc93';
+  static Misplaced = '#4e1d1d';
+  static Correct = '#ffffff';
 }
 
 export type Position = {

@@ -11,16 +11,29 @@ import {
 } from '../../types/appTypes';
 import { words } from '../../utils/words';
 import { utf8ToASCII, validWord } from '../../utils/wordsUtil';
+import schedule from 'node-schedule';
 
 interface ApiRequest extends NextApiRequest {
   body: WordRequest;
 }
 
-//Mudar para trocar de palavra a cada 24 horas
-const random = randomInt(words.length);
+let currentRandom = randomInt(words.length);
+console.log('A palavra inicial é', words[currentRandom]);
+let scheduleRule = new schedule.RecurrenceRule();
+
+//Roda toda meia noite no horario de brasilia
+scheduleRule.tz = 'America/Sao_Paulo';
+scheduleRule.second = 0;
+scheduleRule.minute = 0;
+scheduleRule.hour = 0;
+
+schedule.scheduleJob(scheduleRule, () => {
+  currentRandom = randomInt(words.length);
+  console.log('Bom dia! A palavra do dia é', words[currentRandom]);
+});
 
 const getTodaysWord = (): TodaysWord => {
-  const word = words[random].split('');
+  const word = words[currentRandom].split('');
   const chars: CharCount[] = [];
   word.forEach((w) => {
     let found = false;
@@ -30,8 +43,6 @@ const getTodaysWord = (): TodaysWord => {
         found = true;
       }
     });
-
-    console.log(word.join(''));
 
     if (!found) {
       chars.push({ char: w, count: 1 });
