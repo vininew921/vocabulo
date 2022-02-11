@@ -17,6 +17,7 @@ import {
 } from '../types/appTypes';
 import { sendGuess, todaysWordResult } from '../utils/requests';
 import { setTimeout } from 'timers';
+import copy from 'copy-to-clipboard';
 
 const Game = () => {
   const inputRef = useRef<HTMLInputElement>(null);
@@ -26,6 +27,8 @@ const Game = () => {
   const [canSendRequest, setCanSendRequest] = useState(true);
   const [positions, setPositions] = useState<Position[][]>([]);
   const [finalWord, setFinalWord] = useState<string>('');
+  const [gameEndedState, setGameEndedState] = useState(false);
+  const [shareText, setShareText] = useState('');
 
   useEffect(() => {
     if (inputRef.current) {
@@ -40,17 +43,47 @@ const Game = () => {
   useEffect(() => {
     const getFinalWord = async () => {
       let fw = await todaysWordResult();
-      console.log(fw);
       setFinalWord(fw);
     };
 
-    if (
-      positions[4]?.length == 5 &&
-      positions?.[4]?.[5]?.status != PositionStatus.NotChecked
-    ) {
+    if (gameEnded()) {
       getFinalWord();
     }
   }, [positions]);
+
+  useEffect(() => {
+    if (gameEndedState) {
+      let total = 0;
+      let finalShareText = '';
+      let emojiText = '';
+      gameState.words.forEach((w, i) => {
+        if (w.length == 5 && positions[i]) {
+          total++;
+          positions[i].forEach((p) => {
+            switch (p.status) {
+              case PositionStatus.Correct:
+                emojiText += '🟩';
+                break;
+
+              case PositionStatus.Misplaced:
+                emojiText += '🟨';
+                break;
+
+              case PositionStatus.Wrong:
+                emojiText += '⬛';
+                break;
+            }
+          });
+        }
+
+        emojiText += '\n';
+
+        finalShareText = `Vocabulo.me - ${total}/5\n\n${emojiText}`;
+      });
+
+      setShareText(finalShareText);
+    }
+  }, [gameEndedState]);
 
   useEffect(() => {
     if (
@@ -91,12 +124,45 @@ const Game = () => {
     }
   }, [wordResponse]);
 
+  const gameEnded = (): boolean => {
+    if (
+      positions[4]?.length == 5 &&
+      positions?.[4]?.[5]?.status != PositionStatus.NotChecked
+    ) {
+      console.log(gameState);
+      setGameEndedState(true);
+      return true;
+    }
+
+    let index = gameState.activeWord - 1;
+    if (positions[index]) {
+      for (let i = 0; i < positions[index].length; i++) {
+        if (positions[index][i].status != PositionStatus.Correct) {
+          return false;
+        }
+      }
+
+      setGameState({ ...gameState, activeWord: 7 });
+      console.log(gameState);
+      setGameEndedState(true);
+      return true;
+    }
+
+    return false;
+  };
+
+  const copyToClipboard = () => {
+    if (gameEndedState) {
+      copy(shareText, { message: 'Copiado para a área de transferência' });
+    }
+  };
+
   const handleInputFocus = (e: FocusEvent<HTMLInputElement>) => {
     e.currentTarget.focus();
   };
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
-    if (e.currentTarget.value.length <= 5) {
+    if (e.currentTarget.value.length <= 5 && !gameEndedState) {
       const wordsCopy: string[] = [];
       gameState.words.forEach((v) => wordsCopy.push(v));
 
@@ -154,12 +220,21 @@ const Game = () => {
       />
       <div className='flex w-full justify-center'>
         {finalWord != '' ? (
-          <button
-            className={`text-center text-2xl lg:text-2xl md:text-2xl text-white outline-orange-600  hover:outline-8
-        font-bold h-12 w-64 rounded-2xl outline outline-4`}
-          >
-            Palavra: {finalWord.toUpperCase()}
-          </button>
+          <div className='flex flex-col md:flex-row'>
+            <button
+              className={`text-center text-2xl lg:text-2xl md:text-2xl text-white outline-orange-600
+        font-bold h-10 w-56 rounded-2xl outline outline-4 select-text cursor-default`}
+            >
+              Palavra: {finalWord.toUpperCase()}
+            </button>
+            <button
+              className={`text-center m-5 md:m-0 md:ml-5 text-2xl lg:text-2xl md:text-2xl text-white outline-orange-600  hover:outline-8
+        font-bold h-10 w-48 rounded-2xl ml-4 outline outline-4`}
+              onClick={() => copyToClipboard()}
+            >
+              Compartilhar
+            </button>
+          </div>
         ) : (
           <button
             className={`text-center text-2xl lg:text-2xl md:text-2xl text-white outline-orange-600  hover:outline-8
