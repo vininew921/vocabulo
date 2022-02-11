@@ -8,7 +8,6 @@ import {
   WordResponse,
   WordStatus,
 } from '../../types/appTypes';
-import { words } from '../../utils/words';
 import { utf8ToASCII, validWord } from '../../utils/wordsUtil';
 import { WordGenerator } from '../../lib/wordGenerator';
 
@@ -64,11 +63,14 @@ const getWordResponse = async (req: WordRequest): Promise<WordResponse> => {
   const todaysWord = await getTodaysWord(currentWord.word.join(''));
   let foundSomething = false;
 
+  console.log('currentWord', currentWord.word);
+  console.log('todaysword', todaysWord);
+
   for (let i = 0; i < todaysWord.word.length; i++) {
     let currentPosition = PositionStatus.Wrong;
     let currentChar = currentWord.word[i];
 
-    if (todaysWord.asciiWord.includes(currentChar)) {
+    if (todaysWord.asciiWord.includes(utf8ToASCII(currentChar))) {
       currentPosition = PositionStatus.Wrong;
       for (
         let charIndex = 0;
