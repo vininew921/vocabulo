@@ -52,9 +52,9 @@ export type WordResponse = {
 export type Char = {
   char: string | undefined;
   position: Position | undefined;
-  relativePosition: number;
-  parentWordPosition: number;
-  invalidWordParent: boolean;
+  relativePosition: number | undefined;
+  parentWordPosition: number | undefined;
+  invalidWordParent: boolean | undefined;
 };
 
 export type GameState = {

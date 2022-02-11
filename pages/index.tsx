@@ -1,5 +1,6 @@
 import Head from 'next/head';
 import Game from '../components/Game';
+import Tutorial from '../components/Tutorial';
 
 const Home = () => {
   return (
@@ -29,6 +30,8 @@ const Home = () => {
           <a className='text-orange-600 font-bold ml-2'>Author</a>
         </div>
       </footer>
+
+      <Tutorial />
     </>
   );
 };
