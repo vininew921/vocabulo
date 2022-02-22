@@ -23,7 +23,7 @@ export class WordGenerator {
 
       let tomorrow = new Date();
       tomorrow.setDate(tomorrow.getDate() + 1);
-      tomorrow.setHours(0, 0, 0);
+      tomorrow.setHours(3, 0, 0);
 
       updateDoc(currentDoc, {
         word: wordDoc!.word,
