@@ -25,7 +25,8 @@ export const sendGuess = async (
 };
 
 export const todaysWordResult = async () => {
-  let response = '';
+  let word = '';
+  let count = 0;
   await fetch('/api/gettodaysword', {
     method: 'GET',
     headers: {
@@ -34,9 +35,11 @@ export const todaysWordResult = async () => {
     },
   }).then(async (res) => {
     if (res.ok) {
-      await res.json().then((w) => (response = w.word));
+      await res.json().then((w) => {
+        (word = w.word), (count = w.count);
+      });
     }
   });
 
-  return response;
+  return [word, count.toString()];
 };

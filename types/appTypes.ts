@@ -69,3 +69,7 @@ export type FirebaseWord = {
   word: string;
   expires: Timestamp;
 };
+
+export type FirebaseWordCount = {
+  count: number;
+};

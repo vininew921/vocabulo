@@ -29,6 +29,7 @@ const Game = () => {
   const [finalWord, setFinalWord] = useState<string>('');
   const [gameEndedState, setGameEndedState] = useState(false);
   const [shareText, setShareText] = useState('');
+  const [wordCount, setWordCount] = useState(0);
 
   useEffect(() => {
     if (inputRef.current) {
@@ -42,8 +43,9 @@ const Game = () => {
 
   useEffect(() => {
     const getFinalWord = async () => {
-      let fw = await todaysWordResult();
+      let [fw, count] = await todaysWordResult();
       setFinalWord(fw);
+      setWordCount(parseInt(count));
     };
 
     if (gameEnded()) {
@@ -78,12 +80,12 @@ const Game = () => {
 
         emojiText += '\n';
 
-        finalShareText = `Vocabulo.me - ${total}/5\n\n${emojiText}`;
+        finalShareText = `Joguei vocabulo.me #${wordCount} - ${total}/5\n\n${emojiText}`;
       });
 
       setShareText(finalShareText);
     }
-  }, [gameEndedState]);
+  }, [gameEndedState, wordCount]);
 
   useEffect(() => {
     if (
@@ -129,7 +131,6 @@ const Game = () => {
       positions[4]?.length == 5 &&
       positions?.[4]?.[5]?.status != PositionStatus.NotChecked
     ) {
-      console.log(gameState);
       setGameEndedState(true);
       return true;
     }
@@ -143,7 +144,6 @@ const Game = () => {
       }
 
       setGameState({ ...gameState, activeWord: 7 });
-      console.log(gameState);
       setGameEndedState(true);
       return true;
     }

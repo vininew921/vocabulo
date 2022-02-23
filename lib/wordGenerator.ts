@@ -9,25 +9,48 @@ import {
   updateDoc,
 } from 'firebase/firestore';
 import firebase from '../firebase/firebaseClient';
-import { FirebaseWord } from '../types/appTypes';
+import { FirebaseWord, FirebaseWordCount } from '../types/appTypes';
 
 export class WordGenerator {
   static wordOfTheDay = async (guess: string) => {
-    let wordDoc: FirebaseWord;
-    const docs = await getDocs(collection(firebase, 'words'));
-    docs.docs.map((d) => (wordDoc = d.data() as FirebaseWord));
+    let wordDoc: FirebaseWord | null;
+    let wordCount: FirebaseWordCount | null;
+
+    const wordDocs = await getDocs(collection(firebase, 'words'));
+
+    wordDocs.docs.map((d) => {
+      switch (d.id) {
+        case 'wordOfTheDay':
+          wordDoc = d.data() as FirebaseWord;
+          break;
+
+        case 'wordCount':
+          wordCount = d.data() as FirebaseWordCount;
+          break;
+
+        default:
+          break;
+      }
+    });
 
     if (new Date().getTime() > wordDoc!.expires.toDate().getTime()) {
       wordDoc!.word = words[randomInt(words.length)];
-      let currentDoc = doc(collection(firebase, 'words'), 'wordOfTheDay');
+      wordCount!.count = wordCount!.count + 1;
+
+      let currentWordDoc = doc(collection(firebase, 'words'), 'wordOfTheDay');
+      let currentWordCountDoc = doc(collection(firebase, 'words'), 'wordCount');
 
       let tomorrow = new Date();
       tomorrow.setDate(tomorrow.getDate() + 1);
       tomorrow.setHours(3, 0, 0);
 
-      updateDoc(currentDoc, {
+      updateDoc(currentWordDoc, {
         word: wordDoc!.word,
         expires: Timestamp.fromDate(tomorrow),
+      });
+
+      updateDoc(currentWordCountDoc, {
+        count: wordCount!.count,
       });
     }
 

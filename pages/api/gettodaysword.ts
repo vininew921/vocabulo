@@ -1,7 +1,7 @@
 import { collection, getDocs } from 'firebase/firestore';
 import { NextApiRequest, NextApiResponse } from 'next';
 import firebase from '../../firebase/firebaseClient';
-import { FirebaseWord } from '../../types/appTypes';
+import { FirebaseWord, FirebaseWordCount } from '../../types/appTypes';
 
 const todaysWord = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method != 'GET') {
@@ -10,10 +10,23 @@ const todaysWord = async (req: NextApiRequest, res: NextApiResponse) => {
   }
 
   let wordDoc: FirebaseWord;
+  let wordCount: FirebaseWordCount;
   const docs = await getDocs(collection(firebase, 'words'));
-  docs.docs.map((d) => (wordDoc = d.data() as FirebaseWord));
+  docs.docs.map((d) => {
+    switch (d.id) {
+      case 'wordOfTheDay':
+        wordDoc = d.data() as FirebaseWord;
+        break;
 
-  res.status(200).json({ word: wordDoc!.word });
+      case 'wordCount':
+        wordCount = d.data() as FirebaseWordCount;
+
+      default:
+        break;
+    }
+  });
+
+  res.status(200).json({ word: wordDoc!.word, count: wordCount!.count });
 };
 
 export default todaysWord;
