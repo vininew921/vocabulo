@@ -31,6 +31,8 @@ const Game = () => {
   const [shareText, setShareText] = useState('');
   const [wordCount, setWordCount] = useState(0);
 
+  const howManyWords = 6;
+
   useEffect(() => {
     if (inputRef.current) {
       inputRef.current.focus();
@@ -80,7 +82,7 @@ const Game = () => {
 
         emojiText += '\n';
 
-        finalShareText = `Joguei vocabulo.me #${wordCount} - ${total}/5\n\n${emojiText}`;
+        finalShareText = `Joguei vocabulo.me #${wordCount} - ${total}/${howManyWords}\n\n${emojiText}`;
       });
 
       setShareText(finalShareText);
@@ -107,7 +109,7 @@ const Game = () => {
 
       setPositions(newPositions);
 
-      const activeWordIndex = Math.min(gameState.activeWord + 1, 5);
+      const activeWordIndex = Math.min(gameState.activeWord + 1, howManyWords);
 
       setGameState({
         ...gameState,
@@ -118,7 +120,7 @@ const Game = () => {
 
       if (inputRef.current) {
         inputRef.current.value = '';
-        if (activeWordIndex == 5) {
+        if (activeWordIndex == howManyWords) {
           inputRef.current.disabled = true;
           setCanSendRequest(false);
         }
@@ -128,8 +130,8 @@ const Game = () => {
 
   const gameEnded = (): boolean => {
     if (
-      positions[4]?.length == 5 &&
-      positions?.[4]?.[5]?.status != PositionStatus.NotChecked
+      positions[howManyWords - 1]?.length == 5 &&
+      positions?.[howManyWords - 1]?.[5]?.status != PositionStatus.NotChecked
     ) {
       setGameEndedState(true);
       return true;
@@ -163,7 +165,7 @@ const Game = () => {
   };
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
-    if (e.currentTarget.value.length <= 5 && !gameEndedState) {
+    if (e.currentTarget.value.length <= howManyWords && !gameEndedState) {
       const wordsCopy: string[] = [];
       gameState.words.forEach((v) => wordsCopy.push(v));
 

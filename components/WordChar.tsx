@@ -50,14 +50,14 @@ const WordChar = ({
 
   return (
     <div
-      className={` bg-gray text-center content-center p-2 ${
+      className={`bg-gray text-center content-center p-2 ${
         invalidWordParent && parentWordPosition == gameState.activeWord
           ? 'text-red-500'
           : 'text-white'
       }`}
     >
       <p
-        className={`char md:mdChar lg:lgChar  ${
+        className={`char md:mdChar  ${
           invalidWordParent && parentWordPosition == gameState.activeWord
             ? 'outline-red-600'
             : 'outline-black'

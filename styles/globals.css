@@ -10,7 +10,4 @@
   .mdChar {
     @apply char w-16 h-16 rounded-2xl text-5xl leading-tight;
   }
-  .lgChar {
-    @apply char w-20 h-20 rounded-2xl text-6xl leading-tight;
-  }
 }
