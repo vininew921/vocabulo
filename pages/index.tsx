@@ -27,7 +27,7 @@ const Home = () => {
               style={{ fill: 'rgb(255, 255, 255)' }}
             ></path>
           </svg>
-          <a className='text-orange-600 font-bold ml-2'>Author</a>
+          <a className='text-white font-bold ml-2'>Author</a>
         </div>
       </footer>
 

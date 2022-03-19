@@ -53,14 +53,14 @@ const WordChar = ({
       className={` bg-gray text-center content-center p-2 ${
         invalidWordParent && parentWordPosition == gameState.activeWord
           ? 'text-red-500'
-          : 'text-orange-600'
+          : 'text-white'
       }`}
     >
       <p
         className={`char md:mdChar lg:lgChar  ${
           invalidWordParent && parentWordPosition == gameState.activeWord
             ? 'outline-red-600'
-            : 'outline-orange-600'
+            : 'outline-black'
         }`}
         style={{ backgroundColor: color }}
       >

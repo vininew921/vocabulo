@@ -27,7 +27,7 @@ const Tutorial = () => {
               &#8203;
             </span>
 
-            <div className='inline-block align-bottom bg-gray-900 rounded-xl outline outline-4 outline-orange-600 text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full'>
+            <div className='inline-block align-bottom bg-gray-900 rounded-xl outline outline-4 outline-black text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full'>
               <div className='bg-gray-900 px-4 pt-5 pb-4 sm:p-6 sm:pb-4 '>
                 <div className='sm:flex sm:items-start bg-gray-900'>
                   <div className='mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left bg-gray-900 '>
@@ -38,7 +38,7 @@ const Tutorial = () => {
                       Como jogar Vocábulo
                     </h3>
                     <div className='mt-2  text-sm md:text-md lg:text-xl'>
-                      <div className='text-sm font-bold text-orange-600 md:text-md lg:text-xl'>
+                      <div className='text-sm font-bold text-white md:text-md lg:text-xl'>
                         Adivinhe a palavra de 5 letras em 5 tentativas!
                         <br />
                         <br />

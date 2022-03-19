@@ -223,13 +223,13 @@ const Game = () => {
         {finalWord != '' ? (
           <div className='flex flex-col md:flex-row'>
             <button
-              className={`text-center text-2xl lg:text-2xl md:text-2xl text-white outline-orange-600
+              className={`text-center text-2xl lg:text-2xl md:text-2xl text-white outline-black
         font-bold h-10 w-56 rounded-2xl outline outline-4 select-text cursor-default`}
             >
               Palavra: {finalWord.toUpperCase()}
             </button>
             <button
-              className={`text-center m-5 md:m-0 md:ml-5 text-2xl lg:text-2xl md:text-2xl text-white outline-orange-600  hover:outline-8
+              className={`text-center m-5 md:m-0 md:ml-5 text-2xl lg:text-2xl md:text-2xl text-white outline-black  hover:outline-8
         font-bold h-10 w-48 rounded-2xl ml-4 outline outline-4`}
               onClick={() => copyToClipboard()}
             >
@@ -238,7 +238,7 @@ const Game = () => {
           </div>
         ) : (
           <button
-            className={`text-center text-2xl lg:text-2xl md:text-2xl text-white outline-orange-600  hover:outline-8
+            className={`text-center text-2xl lg:text-2xl md:text-2xl text-white outline-black  hover:outline-8
         font-bold h-12 w-40 rounded-2xl outline outline-4 ${
           gameState.wordString.length != 5 ? 'opacity-40' : ''
         }`}
